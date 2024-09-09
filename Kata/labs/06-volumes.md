@@ -1,7 +1,5 @@
 # Docker volumes
 
-> _Hint: This lab only covers volumes on Docker for Linux. If you are on windows or mac, things can look different._
-
 Not everything can be in a container. The whole idea is that you can start, stop and delete the containers without losing data.
 
 So if you need to persist data, do it outside of the containers.
@@ -9,11 +7,24 @@ So if you need to persist data, do it outside of the containers.
 You have two different ways of mounting data from your container `bind mounts` and `volumes`.
 
 **A bind mount** is the simpler one to understand. It takes a host path, like `/data`, and mounts it inside your container eg. `/opt/app/data`.
-The good thing about bind mount is that they are easy and allow you to connect directly to the host filesystem.
-The downside is that you need to specify it at runtime, and path to mount might vary from host to host, which can be confusing when you want to run your containers on different hosts.
-With bind mount you will also need to deal with backup, migration etc. in an tool outside the Docker ecosystem.
+
+Advantages:
+- Direct copy of data from host to container
+- Easy to understand
+
+Disadvantages:
+- Less secure - the container can read and write to the host filesystem
+- Less portable - the path must exist on the host. The files are stored outside of docker.\
+- Slower - especially on Mac and Windows, there can be performance issues when large amounts of files are copied. This is because the files are copied from the host to the docker desktop VM.
 
 **A docker Volume** is where you can use a `named` or `unnamed` volume to store the external data. You would normally use a volume driver for this, but you can get a host mounted path using the default local volume driver.
+
+Advantages:
+- More secure and portable - volumes are stored inside docker
+- Faster - no need to copy between host and VM.
+
+Disadvantages:
+- More complex to setup
 
 In the next section, you will get to try both of them.
 
