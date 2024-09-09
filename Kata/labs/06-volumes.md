@@ -9,10 +9,12 @@ You have two different ways of mounting data from your container `bind mounts` a
 **A bind mount** is the simpler one to understand. It takes a host path, like `/data`, and mounts it inside your container eg. `/opt/app/data`.
 
 Advantages:
+
 - Direct copy of data from host to container
 - Easy to understand
 
 Disadvantages:
+
 - Less secure - the container can read and write to the host filesystem
 - Less portable - the path must exist on the host. The files are stored outside of docker.\
 - Slower - especially on Mac and Windows, there can be performance issues when large amounts of files are copied. This is because the files are copied from the host to the docker desktop VM.
@@ -20,10 +22,12 @@ Disadvantages:
 **A docker Volume** is where you can use a `named` or `unnamed` volume to store the external data. You would normally use a volume driver for this, but you can get a host mounted path using the default local volume driver.
 
 Advantages:
+
 - More secure and portable - volumes are stored inside docker
 - Faster - no need to copy between host and VM.
 
 Disadvantages:
+
 - More complex to setup
 
 In the next section, you will get to try both of them.
@@ -94,20 +98,20 @@ local               data
 
 Unlike the bind mount, you do not specify where the data is stored on the host.
 
-In the volume API, like for almost all other of Docker’s APIs, there is an `inspect` command giving you low level details. 
+In the volume API, like for almost all other of Docker’s APIs, there is an `inspect` command giving you low level details.
 
 - run `docker volume inspect data` to see where the data is stored on the host.
 
 ```json
 [
-    {
-        "Driver": "local",
-        "Labels": {},
-        "Mountpoint": "/var/lib/docker/volumes/data/_data",
-        "Name": "data",
-        "Options": {},
-        "Scope": "local"
-    }
+  {
+    "Driver": "local",
+    "Labels": {},
+    "Mountpoint": "/var/lib/docker/volumes/data/_data",
+    "Name": "data",
+    "Options": {},
+    "Scope": "local"
+  }
 ]
 ```
 
@@ -119,11 +123,33 @@ You can now use this data volume in all containers. Try to mount it to an nginx 
 
 > **Note:** If the volume refer to is empty and we provide the path to a directory that contains data in the base image, that data will be copied into the volume.
 
-Try now to look at the data stored in `/var/lib/docker/volumes/data/_data` on the host:
+You can now look at data stored in the volume. This is different on each OS:
+
+<details>
+<summary>Linux</summary>
+
+Simply go to `/var/lib/docker/volumes/data/_data` on the host
 
 ```
 sudo ls /var/lib/docker/volumes/data/_data/
 ```
+</details>
+
+<details>
+<summary>Mac/Windows</summary>
+
+To see what is inside a volume on system using Docker Desktop, you need to enter the VM's file system.
+
+This is done by running following command:
+```
+docker run -it --rm -v /var/lib/docker:/var/lib/docker alpine sh
+```
+
+Now you can navigate to the volume by running inside the container:
+```
+ls /var/lib/docker/volumes/data/_data
+```
+</details>
 
 Expected output:
 
@@ -135,12 +161,11 @@ Those two files comes from the Nginx image and is the standard files the webserv
 
 ### Attaching multiple containers to a volume
 
-Multiple containers can attach to the same volume with data. 
+Multiple containers can attach to the same volume with data.
 
 Docker doesn't handle any file locking, so applications must account for the file locking themselves.
 
-
-Let's try to go in and make a new html page for nginx to serve. 
+Let's try to go in and make a new html page for nginx to serve.
 
 We do this by making a new ubuntu container that has the `data` volume attached to `/tmp`, and thereafter create a new html file with the `echo` command:
 
