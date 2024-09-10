@@ -1,0 +1,3 @@
+FROM alpine
+RUN echo "First layer" > /index.html
+CMD ["cat", "/index.html"]

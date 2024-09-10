@@ -1,0 +1,4 @@
+FROM alpine
+RUN echo "First layer" > /index.html
+RUN echo "Second layer" > /index1.html
+CMD ["cat", "/index.html"]
