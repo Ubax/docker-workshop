@@ -1,5 +1,7 @@
 ## Commands
 
+- `python3 -m pip install --user pipenv` - Install pipenv
+- `pipenv install` - Install dependencies
 - `pipenv run python main.py` - Start the server
 
 ## Environment variables
