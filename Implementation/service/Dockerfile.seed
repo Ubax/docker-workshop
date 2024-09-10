@@ -1,0 +1,7 @@
+FROM mongo:7
+
+COPY seed.json /init.json
+ENV COLLECTION quarterly-results
+ENV DB_NAME reports
+ENV DB_URI mongodb://localhost:27017
+CMD mongoimport --uri ${DB_URI} --db ${DB_NAME} --collection ${COLLECTION} --type json --file /init.json --jsonArray

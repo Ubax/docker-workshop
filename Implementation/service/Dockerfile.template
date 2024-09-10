@@ -1,0 +1,12 @@
+FROM golang:1.23 AS build-stage
+WORKDIR /app
+# Copy go.mod and go.sum files to download dependencies
+# Download dependencies (go mod download)
+# Copy all go files to the container
+RUN CGO_ENABLED=0 GOOS=linux go build -o server
+
+FROM scratch
+WORKDIR /
+# Copy the built binary from the build stage (/app/server) to the root directory
+# Remeber to expose port
+ENTRYPOINT ["/server"]

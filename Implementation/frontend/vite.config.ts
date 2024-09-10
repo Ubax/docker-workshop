@@ -11,7 +11,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   const backendUrl = env.VITE_API_BASE_URL
-  const port = env.VITE_PORT ? parseInt(env.VITE_PORT) : 5173
+  const port = env.VITE_PORT ? parseInt(env.VITE_PORT) : 3000
   return {
     plugins: [vue(), vueJsx(), vueDevTools(), tsconfigPaths()],
     resolve: {

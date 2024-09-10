@@ -30,3 +30,9 @@ graph
 - [frontend](./frontend/README.md)
 - [server](./server/README.md)
 - [service](./service/README.md)
+
+## Hints & tips
+
+- If you are not sure how to write a Dockerfile for a specific service, you can use `Dockerfile.template` file
+- If you are not sure how to write a docker-compose file, you can use `docker-compose.template.yml` file
+- If you are short on time, you can copy the Dockerfiles from the `implementation-solution` branch and only write the docker-compose file

@@ -1,0 +1,14 @@
+FROM node:21 AS build
+WORKDIR /app
+# Copy package.json and package-lock.json before other files
+# Install dependencies (npm run install)
+# Copy other files
+# Build the app (npm run build)
+
+
+FROM nginx:1.24
+WORKDIR /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/templates/default.conf.template
+# Copy the build output to serve it with nginx (app is built in /app/dist in build stage)
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

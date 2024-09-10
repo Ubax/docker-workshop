@@ -7,6 +7,7 @@ import os
 app = Flask(__name__)
 
 port = os.getenv('PORT', 5000)
+host = os.getenv('HOST', "127.0.0.1")
 
 dbUsername = os.getenv('POSTGRES_USER')
 dbPassword = os.getenv('POSTGRES_PASSWORD')
@@ -106,4 +107,4 @@ def get_report():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=port)
+    app.run(debug=True, port=port, host=host)
