@@ -1,0 +1,42 @@
+services:
+  serverDB:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+  service:
+    build: ./service
+    environment:
+      - MONGODB_URI=mongodb://serviceDB:27017
+      - DB_NAME=reports
+    depends_on:
+      - serviceDB
+  serviceDB:
+    image: mongo:7
+    volumes:
+      - /data/db/
+      - /var/log/mongodb/
+  service-db-seed:
+    build: 
+      context: ./service
+      dockerfile: Dockerfile.seed
+    environment:
+      - DB_URI=mongodb://serviceDB:27017
+      - DB_NAME=reports
+    depends_on:
+      - serviceDB
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_SERVER: 'serviceDB'
+      ME_CONFIG_BASICAUTH_USERNAME: u
+      ME_CONFIG_BASICAUTH_PASSWORD: p
+    ports:
+      - 8081:8081
+    depends_on:
+      - serviceDB
