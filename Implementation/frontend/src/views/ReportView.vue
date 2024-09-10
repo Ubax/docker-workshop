@@ -25,12 +25,12 @@
     </div>
 </template>
 <script lang="ts">
-import { getReportItems } from "@/utils/api";
+import { getReportItems, type ReportItem } from "@/utils/api";
 
 export default {
     data() {
         return {
-            rows: []
+            rows: [] as ReportItem[]
         };
     },
     methods: {
